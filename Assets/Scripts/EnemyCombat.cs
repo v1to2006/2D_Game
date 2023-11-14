@@ -10,13 +10,10 @@ public class EnemyCombat : MonoBehaviour
 	{
 		if (collision.TryGetComponent<Player>(out Player player))
 		{
-			while (true)
+			if (!_isCooldown)
 			{
-				if (!_isCooldown)
-				{
-					AttackPlayer(player);
-					StartCooldown();
-				}
+				AttackPlayer(player);
+				StartCooldown();
 			}
 		}
 	}
