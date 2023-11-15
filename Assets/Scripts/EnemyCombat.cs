@@ -1,36 +1,38 @@
+using System.Collections;
 using UnityEngine;
 
 public class EnemyCombat : MonoBehaviour
 {
-	private float _attackDamage = 2f;
-	private float _attackCooldownTime = 1f;
-	private bool _isCooldown = false;
+    private float _attackDamage = 2f;
+    private float _attackCooldownTime = 1f;
 
-	private void OnTriggerEnter2D(Collider2D collision)
-	{
-		if (collision.TryGetComponent<Player>(out Player player))
-		{
-			if (!_isCooldown)
-			{
-				AttackPlayer(player);
-				StartCooldown();
-			}
-		}
-	}
+    Coroutine _attackCoroutine;
 
-	private void AttackPlayer(Player player)
-	{
-		player.TakeDamage(_attackDamage);
-	}
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.TryGetComponent<Player>(out Player player))
+        {
+            _attackCoroutine = StartCoroutine(AttackPlayer(player));
+        }
+    }
 
-	private void StartCooldown()
-	{
-		_isCooldown = true;
-		Invoke(nameof(ResetCooldown), _attackCooldownTime);
-	}
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.TryGetComponent<Player>(out Player player))
+        {
+            StopCoroutine(_attackCoroutine);
+        }
+    }
 
-	private void ResetCooldown()
-	{
-		_isCooldown = false;
-	}
+    private IEnumerator AttackPlayer(Player player)
+    {
+        WaitForSeconds cooldown = new WaitForSeconds(_attackCooldownTime);
+
+        while (true)
+        {
+            player.TakeDamage(_attackDamage);
+
+            yield return cooldown;
+        }
+    }
 }
