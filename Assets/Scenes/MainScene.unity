@@ -204,7 +204,7 @@ Transform:
   m_GameObject: {fileID: 127835917}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.41, y: -0.21, z: 0}
+  m_LocalPosition: {x: -3, y: 0, z: 0}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -263,7 +263,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 127835917}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: f12c0f14a101bd142a1c826124f25d31, type: 2}
   m_CullingMode: 0
@@ -1185,6 +1185,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bc56060cce8e064cb146aecce8a6c77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _attackDamage: 2
+  _attackCooldownTime: 1
 --- !u!114 &1961348870
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1199,9 +1201,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _movementPointsContainer: {fileID: 2096855646}
   _movementSpeed: 0.5
-  _chaseMovementSpeed: 3
   _reachDistance: 0.5
-  _chaseRadius: 3
 --- !u!61 &1961348871
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1339,6 +1339,10 @@ PrefabInstance:
     - target: {fileID: 3975680698556679803, guid: 9fdc698d49749e541954f7be41d59c6f, type: 3}
       propertyPath: _attackRadius
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3975680698556679803, guid: 9fdc698d49749e541954f7be41d59c6f, type: 3}
+      propertyPath: _attackDelayTime
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 3975680698556679803, guid: 9fdc698d49749e541954f7be41d59c6f, type: 3}
       propertyPath: _enemyLayer.m_Bits
