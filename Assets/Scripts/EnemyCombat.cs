@@ -37,7 +37,7 @@ public class EnemyCombat : MonoBehaviour
 		{
 			if (_player != null)
 			{
-				player.TakeDamage(_attackDamage);
+				_player.TakeDamage(_attackDamage);
 
 				yield return cooldown;
 			}
