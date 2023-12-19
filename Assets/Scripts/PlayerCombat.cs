@@ -4,51 +4,60 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class PlayerCombat : MonoBehaviour
 {
-	[SerializeField] private Transform _attackPoint;
-	[SerializeField] private LayerMask _enemyLayer;
-	[SerializeField] private float _attackRadius;
-	[SerializeField] private float _attackDelayTime;
+    [SerializeField] private Transform _attackPoint;
+    [SerializeField] private float _damage;
+    [SerializeField] private float _attackRadius;
+    [SerializeField] private float _attackDelayTime;
+    [SerializeField] private LayerMask _enemyLayer;
 
-	private Animator _animator;
+    private Animator _animator;
 
-	private void Awake()
-	{
-		_animator = GetComponent<Animator>();
+    private Coroutine _tryAttackEnemyCoroutine;
 
-		StartCoroutine(Attack());
-	}
+    private void Awake()
+    {
+        _animator = GetComponent<Animator>();
 
-	private IEnumerator Attack()
-	{
-		const string ButtonFire1 = "Fire1";
-		const string ParameterAttack = "Attack";
+        _tryAttackEnemyCoroutine = StartCoroutine(TryAttackEnemy());
+    }
 
-		WaitForSeconds attackDelay = new WaitForSeconds(_attackDelayTime);
+    private IEnumerator TryAttackEnemy()
+    {
+        const string ButtonFire1 = "Fire1";
+        const string ParameterAttack = "Attack";
 
-		while (true)
-		{
-			if (Input.GetButtonDown(ButtonFire1))
-			{
-				_animator.SetTrigger(ParameterAttack);
+        WaitForSeconds attackDelay = new WaitForSeconds(_attackDelayTime);
 
-				Collider2D[] detectedEnemies = Physics2D.OverlapCircleAll(_attackPoint.position, _attackRadius, _enemyLayer);
+        while (true)
+        {
+            if (Input.GetButtonDown(ButtonFire1))
+            {
+                _animator.SetTrigger(ParameterAttack);
 
-				foreach (Collider2D enemyCollider in detectedEnemies)
-				{
-					Enemy enemy = enemyCollider.GetComponent<Enemy>();
+                Collider2D hit = Physics2D.OverlapCircle(_attackPoint.position, _attackRadius, _enemyLayer);
 
-					KillEnemy(enemy);
-				}
+                if (hit)
+                {
+                    if (hit.transform.TryGetComponent<Enemy>(out Enemy enemy))
+                    {
+                        AttackEnemy(enemy);
+                    }
+                }
 
-				yield return attackDelay;
-			}
+                yield return attackDelay;
+            }
 
-			yield return null;
-		}
-	}
+            yield return null;
+        }
+    }
 
-	private void KillEnemy(Enemy enemy)
-	{
-		enemy.Die();
-	}
+    private void AttackEnemy(Enemy enemy)
+    {
+        enemy.TakeDamage(_damage);
+    }
+
+    private void OnDestroy()
+    {
+        StopCoroutine(_tryAttackEnemyCoroutine);
+    }
 }

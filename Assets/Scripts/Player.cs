@@ -2,65 +2,57 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Animator))]
-[RequireComponent(typeof(Rigidbody2D))]
 public class Player : MonoBehaviour
 {
-	[HideInInspector] public float CurrentHealh { get; private set; }
-	[HideInInspector] public float MaxHealth { get; private set; } = 10f;
-	[HideInInspector] public float MinHealth { get; private set; } = 0f;
+    [HideInInspector] public float CurrentHealth { get; private set; }
+    [HideInInspector] public float MaxHealth { get; private set; } = 10f;
 
-	private Animator _animator;
+    private float _minHealth = 0f;
+    private Animator _animator;
 
-	private void Awake()
-	{
-		_animator = GetComponent<Animator>();
+    private void Awake()
+    {
+        _animator = GetComponent<Animator>();
 
-		CurrentHealh = MaxHealth;
-	}
+        CurrentHealth = MaxHealth;
+    }
 
-	public void TakeDamage(float damage)
-	{
-		const string ParameterHit = "Hit";
+    public void TakeDamage(float damage)
+    {
+        const string ParameterHit = "Hit";
 
-		_animator.SetTrigger(ParameterHit);
-		CurrentHealh -= damage;
+        _animator.SetTrigger(ParameterHit);
+        CurrentHealth -= damage;
 
-		CheckHealth();
-		DisplayCurrentHealth();
-	}
+        CheckHealth();
+    }
 
-	public void TakeHeal(float heal)
-	{
-		const string ParameterHeal = "Heal";
+    public void TakeHeal(float heal)
+    {
+        const string ParameterHeal = "Heal";
 
-		_animator.SetTrigger(ParameterHeal);
-		CurrentHealh += heal;
+        _animator.SetTrigger(ParameterHeal);
+        CurrentHealth += heal;
 
-		CheckHealth();
-		DisplayCurrentHealth();
-	}
+        CheckHealth();
+    }
 
-	private void CheckHealth()
-	{
-		if (CurrentHealh <= MinHealth)
-		{
-			Die();
-		}
-		else if (CurrentHealh > MaxHealth)
-		{
-			CurrentHealh = MaxHealth;
-		}
-	}
+    private void CheckHealth()
+    {
+        if (CurrentHealth <= _minHealth)
+        {
+            Die();
+        }
+        else if (CurrentHealth > MaxHealth)
+        {
+            CurrentHealth = MaxHealth;
+        }
+    }
 
-	private void Die()
-	{
-		const string SceneMain = "MainScene";
+    private void Die()
+    {
+        const string SceneMain = "MainScene";
 
-		SceneManager.LoadScene(SceneMain);
-	}
-
-	private void DisplayCurrentHealth()
-	{
-		Debug.Log($"Player current health: {CurrentHealh}");
-	}
+        SceneManager.LoadScene(SceneMain);
+    }
 }

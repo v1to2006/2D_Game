@@ -3,22 +3,38 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class Enemy : MonoBehaviour
 {
-	private Animator _animator;
+    [SerializeField] private float _maxHealth = 5f;
+    
+    private float _minHealth = 0f;
+    private float _currentHealth;
+    private Animator _animator;
 
-	private void Awake()
-	{
-		_animator = GetComponent<Animator>();
-	}
+    private void Awake()
+    {
+        _animator = GetComponent<Animator>();
+        _currentHealth = _maxHealth;
+    }
 
-	public void Die() 
-	{
-		const string ParameterDie = "Die";
+    public void TakeDamage(float damage)
+    {
+        const string ParameterHit = "Hit";
 
-		_animator.SetTrigger(ParameterDie);
-	}
+        _animator.SetTrigger(ParameterHit);
+        _currentHealth -= damage;
 
-	public void DestroySelf()
-	{
-		Destroy(gameObject);
-	}
+        CheckHealth();
+    }
+
+    public void Die()
+    {
+        Destroy(gameObject);
+    }
+
+    private void CheckHealth()
+    {
+        if (_currentHealth <= _minHealth)
+        {
+            Die();
+        }
+    }
 }

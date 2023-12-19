@@ -3,46 +3,46 @@ using UnityEngine;
 
 public class EnemyCombat : MonoBehaviour
 {
-	[SerializeField] private float _attackDamage;
-	[SerializeField] private float _attackCooldownTime;
+    [SerializeField] private float _attackDamage;
+    [SerializeField] private float _attackCooldownTime;
+    [SerializeField] private Vector2 _attackRadius;
+    [SerializeField] private LayerMask _playerLayer;
 
-	private Player _player = null;
+    private Coroutine _tryAttackPlayerCoroutine;
 
-	private void Awake()
-	{
-		StartCoroutine(AttackPlayer(_player));
-	}
+    private void Awake()
+    {
+        _tryAttackPlayerCoroutine = StartCoroutine(TryAttackPlayer());
+    }
 
-	private void OnTriggerEnter2D(Collider2D collision)
-	{
-		if (collision.TryGetComponent<Player>(out Player player))
-		{
-			_player = player;
-		}
-	}
+    private IEnumerator TryAttackPlayer()
+    {
+        WaitForSeconds cooldown = new WaitForSeconds(_attackCooldownTime);
 
-	private void OnTriggerExit2D(Collider2D collision)
-	{
-		if (collision.TryGetComponent<Player>(out Player player))
-		{
-			_player = null;
-		}
-	}
+        while (true)
+        {
+            Collider2D hit = Physics2D.OverlapBox(transform.position, _attackRadius, 0f, _playerLayer);
 
-	private IEnumerator AttackPlayer(Player player)
-	{
-		WaitForSeconds cooldown = new WaitForSeconds(_attackCooldownTime);
+            if (hit)
+            {
+                if (hit.TryGetComponent<Player>(out Player player))
+                {
+                    AttackPlayer(player);
+                    yield return cooldown;
+                }
+            }
 
-		while (true)
-		{
-			if (_player != null)
-			{
-				_player.TakeDamage(_attackDamage);
+            yield return null;
+        }
+    }
 
-				yield return cooldown;
-			}
+    private void AttackPlayer(Player player)
+    {
+        player.TakeDamage(_attackDamage);
+    }
 
-			yield return null;
-		}
-	}
+    private void OnDestroy()
+    {
+        StopCoroutine(_tryAttackPlayerCoroutine);
+    }
 }

@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class Heal : MonoBehaviour
 {
-    private float _heal = 2f;
+    [SerializeField] private float _healAmount;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent<Player>(out Player player) && player.CurrentHealh < player.MaxHealth)
+        if (collision.TryGetComponent<Player>(out Player player) && player.CurrentHealth < player.MaxHealth)
         {
             HealPlayer(player);
         }
@@ -14,7 +14,7 @@ public class Heal : MonoBehaviour
 
     private void HealPlayer(Player player)
     {
-        player.TakeHeal(_heal);
+        player.TakeHeal(_healAmount);
 
         Destroy(gameObject);
     }
