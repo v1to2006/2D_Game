@@ -22,7 +22,6 @@ public class PlayerMovement : MonoBehaviour
     {
         Move();
         Jump();
-        SetFallAnimation();
     }
 
     private bool IsGrounded()
@@ -35,22 +34,25 @@ public class PlayerMovement : MonoBehaviour
     private void Jump()
     {
         const string ButtonJump = "Jump";
-        const string ParameterJump = "Jump";
+        const string AnimationParameterJump = "Jump";
+        const string AnimationParameterFall = "Fall";
 
         if (Input.GetButtonDown(ButtonJump) && IsGrounded())
         {
-            _animator.SetTrigger(ParameterJump);
+            _animator.SetTrigger(AnimationParameterJump);
             _rigidbody2d.AddForce(Vector2.up * _jumpForce);
         }
+
+        _animator.SetBool(AnimationParameterFall, !IsGrounded());
     }
 
     private void Move()
     {
-        const string ParameterSpeed = "Speed";
+        const string AnimationParameterSpeed = "Speed";
         const string AxisHorizontal = "Horizontal";
 
         float horizontalMove = Input.GetAxisRaw(AxisHorizontal);
-        _animator.SetFloat(ParameterSpeed, Mathf.Abs(horizontalMove));
+        _animator.SetFloat(AnimationParameterSpeed, Mathf.Abs(horizontalMove));
 
         _rigidbody2d.velocity = new Vector2(horizontalMove * _movementSpeed * Time.fixedDeltaTime, _rigidbody2d.velocity.y);
         Flip(horizontalMove);
@@ -67,12 +69,5 @@ public class PlayerMovement : MonoBehaviour
         {
             transform.localRotation = Quaternion.Euler(0, 0, 0);
         }
-    }
-
-    private void SetFallAnimation()
-    {
-        const string ParameterFall = "Fall";
-
-        _animator.SetBool(ParameterFall, !IsGrounded());
     }
 }

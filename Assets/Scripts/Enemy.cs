@@ -17,9 +17,9 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        const string ParameterHit = "Hit";
+        const string AnimationParameterTakeDamage = "TakeDamage";
 
-        _animator.SetTrigger(ParameterHit);
+        _animator.SetTrigger(AnimationParameterTakeDamage);
         _currentHealth -= damage;
 
         CheckHealth();

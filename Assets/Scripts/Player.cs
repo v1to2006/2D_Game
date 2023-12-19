@@ -4,48 +4,50 @@ using UnityEngine.SceneManagement;
 [RequireComponent(typeof(Animator))]
 public class Player : MonoBehaviour
 {
-    [HideInInspector] public float CurrentHealth { get; private set; }
-    [HideInInspector] public float MaxHealth { get; private set; } = 10f;
-
+    private float _currentHealth;
+    private float _maxHealth = 10f;
     private float _minHealth = 0f;
     private Animator _animator;
+
+    public float CurrentHealth => _currentHealth;
+    public float MaxHealth => _maxHealth;
 
     private void Awake()
     {
         _animator = GetComponent<Animator>();
 
-        CurrentHealth = MaxHealth;
+        _currentHealth = _maxHealth;
     }
 
     public void TakeDamage(float damage)
     {
-        const string ParameterHit = "Hit";
+        const string AnimationParameterTakeDamage = "TakeDamage";
 
-        _animator.SetTrigger(ParameterHit);
-        CurrentHealth -= damage;
+        _animator.SetTrigger(AnimationParameterTakeDamage);
+        _currentHealth -= damage;
 
         CheckHealth();
     }
 
     public void TakeHeal(float heal)
     {
-        const string ParameterHeal = "Heal";
+        const string AnimationParameterHeal = "Heal";
 
-        _animator.SetTrigger(ParameterHeal);
-        CurrentHealth += heal;
+        _animator.SetTrigger(AnimationParameterHeal);
+        _currentHealth += heal;
 
         CheckHealth();
     }
 
     private void CheckHealth()
     {
-        if (CurrentHealth <= _minHealth)
+        if (_currentHealth <= _minHealth)
         {
             Die();
         }
-        else if (CurrentHealth > MaxHealth)
+        else if (_currentHealth > _maxHealth)
         {
-            CurrentHealth = MaxHealth;
+            _currentHealth = _maxHealth;
         }
     }
 

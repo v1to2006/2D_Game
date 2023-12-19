@@ -24,7 +24,7 @@ public class PlayerCombat : MonoBehaviour
     private IEnumerator TryAttackEnemy()
     {
         const string ButtonFire1 = "Fire1";
-        const string ParameterAttack = "Attack";
+        const string AnimationParameterAttack = "Attack";
 
         WaitForSeconds attackDelay = new WaitForSeconds(_attackDelayTime);
 
@@ -32,7 +32,7 @@ public class PlayerCombat : MonoBehaviour
         {
             if (Input.GetButtonDown(ButtonFire1))
             {
-                _animator.SetTrigger(ParameterAttack);
+                _animator.SetTrigger(AnimationParameterAttack);
 
                 Collider2D hit = Physics2D.OverlapCircle(_attackPoint.position, _attackRadius, _enemyLayer);
 
