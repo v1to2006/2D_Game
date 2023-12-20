@@ -3,8 +3,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class EnemyMovement : MonoBehaviour
 {
-    private readonly Quaternion _rightRotation = Quaternion.Euler(0, 0, 0);
-    private readonly Quaternion _leftRotation = Quaternion.Euler(0, 180, 0);
+    private readonly Quaternion RightRotation = Quaternion.Euler(0, 0, 0);
+    private readonly Quaternion LeftRotation = Quaternion.Euler(0, 180, 0);
 
     [SerializeField] private Transform _movementPointsContainer;
     [SerializeField] private Vector2 _chaseRadius;
@@ -72,11 +72,11 @@ public class EnemyMovement : MonoBehaviour
     {
         if (transform.position.x < target.x)
         {
-            transform.localRotation = _rightRotation;
+            transform.localRotation = RightRotation;
         }
         else if (transform.position.x > target.x)
         {
-            transform.localRotation = _leftRotation;
+            transform.localRotation = LeftRotation;
         }
     }
 

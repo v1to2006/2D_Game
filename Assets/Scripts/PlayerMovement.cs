@@ -7,6 +7,9 @@ public class PlayerMovement : MonoBehaviour
     private const string AxisHorizontal = "Horizontal";
     private const string ButtonJump = "Jump";
 
+    private readonly Quaternion RightRotation = Quaternion.Euler(0, 0, 0);
+    private readonly Quaternion LeftRotation = Quaternion.Euler(0, 180, 0);
+
     [SerializeField] private float _movementSpeed;
     [SerializeField] private float _jumpForce;
     [SerializeField] private Transform _groundCheck;
@@ -58,12 +61,12 @@ public class PlayerMovement : MonoBehaviour
     {
         if (horizontalMove < 0)
         {
-            transform.localRotation = Quaternion.Euler(0, 180, 0);
+            transform.localRotation = LeftRotation;
         }
 
         if (horizontalMove > 0)
         {
-            transform.localRotation = Quaternion.Euler(0, 0, 0);
+            transform.localRotation = RightRotation;
         }
     }
 }
