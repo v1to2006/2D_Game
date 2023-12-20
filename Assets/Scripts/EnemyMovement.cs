@@ -3,6 +3,9 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class EnemyMovement : MonoBehaviour
 {
+    private readonly Quaternion _rightRotation = Quaternion.Euler(0, 0, 0);
+    private readonly Quaternion _leftRotation = Quaternion.Euler(0, 180, 0);
+
     [SerializeField] private Transform _movementPointsContainer;
     [SerializeField] private Vector2 _chaseRadius;
     [SerializeField] private LayerMask _playerLayer;
@@ -14,9 +17,6 @@ public class EnemyMovement : MonoBehaviour
     private Vector2 _target;
     private Vector2[] _movementPoints;
     private int _currentPoint;
-
-    private readonly Quaternion _rightRotation = Quaternion.Euler(0, 0, 0);
-    private readonly Quaternion _leftRotation = Quaternion.Euler(0, 180, 0);
 
     private void Awake()
     {
