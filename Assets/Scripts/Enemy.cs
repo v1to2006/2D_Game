@@ -1,25 +1,23 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(EnemyAnimator))]
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private float _maxHealth = 5f;
     
+    private EnemyAnimator _enemyAnimator;
     private float _minHealth = 0f;
     private float _currentHealth;
-    private Animator _animator;
 
     private void Awake()
     {
-        _animator = GetComponent<Animator>();
+        _enemyAnimator = GetComponent<EnemyAnimator>();
         _currentHealth = _maxHealth;
     }
 
     public void TakeDamage(float damage)
     {
-        const string AnimationParameterTakeDamage = "TakeDamage";
-
-        _animator.SetTrigger(AnimationParameterTakeDamage);
+        _enemyAnimator.SetTakeDamage();
         _currentHealth -= damage;
 
         CheckHealth();

@@ -5,15 +5,18 @@ public class EnemyMovement : MonoBehaviour
 {
     [SerializeField] private Transform _movementPointsContainer;
     [SerializeField] private Vector2 _chaseRadius;
+    [SerializeField] private LayerMask _playerLayer;
     [SerializeField] private float _movementSpeed;
     [SerializeField] private float _chaseSpeed;
     [SerializeField] private float _reachDistance = 0.1f;
-    [SerializeField] private LayerMask _playerLayer;
 
     private Rigidbody2D _rigidbody2d;
     private Vector2 _target;
     private Vector2[] _movementPoints;
     private int _currentPoint;
+
+    private readonly Quaternion _rightRotation = Quaternion.Euler(0, 0, 0);
+    private readonly Quaternion _leftRotation = Quaternion.Euler(0, 180, 0);
 
     private void Awake()
     {
@@ -26,7 +29,7 @@ public class EnemyMovement : MonoBehaviour
     {
         Collider2D hit = Physics2D.OverlapBox(transform.position, _chaseRadius, 0f, _playerLayer);
 
-        if (hit)
+        if (hit != null)
         {
             if (hit.transform.TryGetComponent<Player>(out Player player))
             {
@@ -69,11 +72,11 @@ public class EnemyMovement : MonoBehaviour
     {
         if (transform.position.x < target.x)
         {
-            transform.localRotation = Quaternion.Euler(0, 0, 0);
+            transform.localRotation = _rightRotation;
         }
         else if (transform.position.x > target.x)
         {
-            transform.localRotation = Quaternion.Euler(0, 180, 0);
+            transform.localRotation = _leftRotation;
         }
     }
 

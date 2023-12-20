@@ -10,7 +10,7 @@ public class EnemyCombat : MonoBehaviour
 
     private Coroutine _tryAttackPlayerCoroutine;
 
-    private void Awake()
+    private void Start()
     {
         _tryAttackPlayerCoroutine = StartCoroutine(TryAttackPlayer());
     }
@@ -23,7 +23,7 @@ public class EnemyCombat : MonoBehaviour
         {
             Collider2D hit = Physics2D.OverlapBox(transform.position, _attackRadius, 0f, _playerLayer);
 
-            if (hit)
+            if (hit != null)
             {
                 if (hit.TryGetComponent<Player>(out Player player))
                 {

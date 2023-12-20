@@ -6,7 +6,7 @@ public class Heal : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent<Player>(out Player player) && player.CurrentHealth < player.MaxHealth)
+        if (collision.TryGetComponent<Player>(out Player player))
         {
             HealPlayer(player);
         }
@@ -14,6 +14,9 @@ public class Heal : MonoBehaviour
 
     private void HealPlayer(Player player)
     {
+        if (player.CurrentHealth == player.MaxHealth)
+            return;
+
         player.TakeHeal(_healAmount);
 
         Destroy(gameObject);

@@ -1,21 +1,24 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(PlayerAnimator))]
 public class PlayerMovement : MonoBehaviour
 {
+    private const string AxisHorizontal = "Horizontal";
+    private const string ButtonJump = "Jump";
+
     [SerializeField] private float _movementSpeed;
     [SerializeField] private float _jumpForce;
     [SerializeField] private Transform _groundCheck;
     [SerializeField] private LayerMask _groundLayer;
 
     private Rigidbody2D _rigidbody2d;
-    private Animator _animator;
+    private PlayerAnimator _playerAnimator;
 
     private void Awake()
     {
         _rigidbody2d = GetComponent<Rigidbody2D>();
-        _animator = GetComponent<Animator>();
+        _playerAnimator = GetComponent<PlayerAnimator>();
     }
 
     private void Update()
@@ -33,26 +36,19 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
-        const string ButtonJump = "Jump";
-        const string AnimationParameterJump = "Jump";
-        const string AnimationParameterFall = "Fall";
-
         if (Input.GetButtonDown(ButtonJump) && IsGrounded())
         {
-            _animator.SetTrigger(AnimationParameterJump);
+            _playerAnimator.SetJump();
             _rigidbody2d.AddForce(Vector2.up * _jumpForce);
         }
 
-        _animator.SetBool(AnimationParameterFall, !IsGrounded());
+        _playerAnimator.SetFall(!IsGrounded());
     }
 
     private void Move()
     {
-        const string AnimationParameterSpeed = "Speed";
-        const string AxisHorizontal = "Horizontal";
-
         float horizontalMove = Input.GetAxisRaw(AxisHorizontal);
-        _animator.SetFloat(AnimationParameterSpeed, Mathf.Abs(horizontalMove));
+        _playerAnimator.SetRun(Mathf.Abs(horizontalMove));
 
         _rigidbody2d.velocity = new Vector2(horizontalMove * _movementSpeed * Time.fixedDeltaTime, _rigidbody2d.velocity.y);
         Flip(horizontalMove);

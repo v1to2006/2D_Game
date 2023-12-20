@@ -1,29 +1,29 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(PlayerAnimator))]
 public class Player : MonoBehaviour
 {
+    private const string SceneMain = "MainScene";
+
+    private PlayerAnimator _playerAnimator;
     private float _currentHealth;
     private float _maxHealth = 10f;
     private float _minHealth = 0f;
-    private Animator _animator;
 
     public float CurrentHealth => _currentHealth;
     public float MaxHealth => _maxHealth;
 
     private void Awake()
     {
-        _animator = GetComponent<Animator>();
+        _playerAnimator = GetComponent<PlayerAnimator>();
 
         _currentHealth = _maxHealth;
     }
 
     public void TakeDamage(float damage)
     {
-        const string AnimationParameterTakeDamage = "TakeDamage";
-
-        _animator.SetTrigger(AnimationParameterTakeDamage);
+        _playerAnimator.SetTakeDamage();
         _currentHealth -= damage;
 
         CheckHealth();
@@ -31,9 +31,7 @@ public class Player : MonoBehaviour
 
     public void TakeHeal(float heal)
     {
-        const string AnimationParameterHeal = "Heal";
-
-        _animator.SetTrigger(AnimationParameterHeal);
+        _playerAnimator.SetHeal();
         _currentHealth += heal;
 
         CheckHealth();
@@ -53,8 +51,6 @@ public class Player : MonoBehaviour
 
     private void Die()
     {
-        const string SceneMain = "MainScene";
-
         SceneManager.LoadScene(SceneMain);
     }
 }
