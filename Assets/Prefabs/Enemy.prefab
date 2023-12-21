@@ -262,6 +262,7 @@ MonoBehaviour:
   _fillColor: {r: 1, g: 0, b: 0, a: 1}
   _emptyColor: {r: 1, g: 1, b: 1, a: 1}
   _transitionSpeed: 3
+  _enemy: {fileID: 3288420816526547729}
 --- !u!1 &6924313992415996854
 GameObject:
   m_ObjectHideFlags: 0

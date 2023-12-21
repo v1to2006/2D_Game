@@ -1,15 +1,14 @@
-using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(EnemyAnimator))]
 public class Enemy : MonoBehaviour
 {
-    public static event Action<Enemy, float, float> HealthChanged;
+    public event UnityAction<Enemy, float, float> HealthChanged;
 
     [SerializeField] private EnemyMesh _enemyMesh;
     [SerializeField] private float _maxHealth = 5f;
     
-    private float _minHealth = 0f;
     private float _currentHealth;
 
     public float Health => _currentHealth;
@@ -37,7 +36,7 @@ public class Enemy : MonoBehaviour
 
     private void CheckHealth()
     {
-        if (_currentHealth <= _minHealth)
+        if (_currentHealth <= 0f)
         {
             Die();
         }

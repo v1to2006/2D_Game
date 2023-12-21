@@ -10,17 +10,13 @@ public class EnemyHealthBar : MonoBehaviour
     [SerializeField] private Color _fillColor;
     [SerializeField] private Color _emptyColor;
     [SerializeField] private float _transitionSpeed;
+    [SerializeField] private Enemy _enemy;
 
     private Coroutine _healthTransitionCoroutine = null;
 
     private void OnEnable()
     {
-        Enemy.HealthChanged += DisplayHealth;
-    }
-
-    private void OnDisable()
-    {
-        Enemy.HealthChanged -= DisplayHealth;
+        _enemy.HealthChanged += DisplayHealth;
     }
 
     private void DisplayHealth(Enemy enemy, float currentHealth, float maxHealth)
@@ -63,11 +59,5 @@ public class EnemyHealthBar : MonoBehaviour
 
             yield return null;
         }
-    }
-
-    private void OnDestroy()
-    {
-        if (_healthTransitionCoroutine != null)
-            StopCoroutine(_healthTransitionCoroutine);
     }
 }

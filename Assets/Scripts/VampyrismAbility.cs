@@ -1,10 +1,11 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class VampyrismAbility : MonoBehaviour
 {
-    public static event Action<float> HealthVampyrised;
+    public UnityAction<float> HealthVampyrised;
 
     [SerializeField] private KeyCode _abilityKey;
     [SerializeField] private float _abilityRadius;
@@ -15,15 +16,13 @@ public class VampyrismAbility : MonoBehaviour
     [SerializeField] private LineRenderer _lineRenderer;
     [SerializeField] private Color _lineColor;
 
-
-    private Coroutine _tryVampyriseCoroutine;
-    private Coroutine _vampyriseCoroutine;
+    private Vector2 _defaultLineRendererPosition = new Vector2(0, 0);
 
     private void Start()
     {
         _lineRenderer.material.color = _lineColor;
 
-        _tryVampyriseCoroutine = StartCoroutine(TryVampyrise());
+        StartCoroutine(TryVampyrise());
     }
 
     private IEnumerator TryVampyrise()
@@ -40,9 +39,9 @@ public class VampyrismAbility : MonoBehaviour
 
                 if (closestEnemy != null)
                 {
-                    _vampyriseCoroutine = StartCoroutine(Vampyrise(closestEnemy, hits, () =>
+                    StartCoroutine(Vampyrise(closestEnemy, hits, () =>
                     {
-                        SetLinePosition(new Vector2(0, 0), new Vector2(0, 0));
+                        UpdateLineRendererPosition(_defaultLineRendererPosition, _defaultLineRendererPosition);
                     }));
 
                     yield return cooldown;
@@ -53,7 +52,7 @@ public class VampyrismAbility : MonoBehaviour
         }
     }
 
-    private IEnumerator Vampyrise(Enemy enemy, Collider2D[] hits, Action complete)
+    private IEnumerator Vampyrise(Enemy enemy, Collider2D[] hits, UnityAction complete)
     {
         float duration = _abilityDuration;
 
@@ -61,7 +60,7 @@ public class VampyrismAbility : MonoBehaviour
         {
             hits = Physics2D.OverlapCircleAll(transform.position, _abilityRadius, _enemyLayer);
 
-            SetLinePosition(transform.position, enemy.transform.position);
+            UpdateLineRendererPosition(transform.position, enemy.transform.position);
 
             enemy.TakeDamage(_abilityDamage);
             HealthVampyrised?.Invoke(_abilityDamage);
@@ -114,18 +113,9 @@ public class VampyrismAbility : MonoBehaviour
         return closestEnemy;
     }
 
-    private void SetLinePosition(Vector2 current, Vector2 target)
+    private void UpdateLineRendererPosition(Vector2 startPoint, Vector2 endPoint)
     {
-        _lineRenderer.SetPosition(0, current);
-        _lineRenderer.SetPosition(1, target);
-    }
-
-    private void OnDestroy()
-    {
-        if (_vampyriseCoroutine != null)
-            StopCoroutine(_vampyriseCoroutine);
-
-        if (_tryVampyriseCoroutine != null)
-            StopCoroutine(_tryVampyriseCoroutine);
+        _lineRenderer.SetPosition(0, startPoint);
+        _lineRenderer.SetPosition(1, endPoint);
     }
 }

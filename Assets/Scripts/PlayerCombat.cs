@@ -12,11 +12,9 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] private float _attackDelayTime;
     [SerializeField] private LayerMask _enemyLayer;
 
-    private Coroutine _tryAttackEnemyCoroutine;
-
     private void Start()
     {
-        _tryAttackEnemyCoroutine = StartCoroutine(TryAttackEnemy());
+        StartCoroutine(TryAttackEnemy());
     }
 
     private IEnumerator TryAttackEnemy()
@@ -49,10 +47,5 @@ public class PlayerCombat : MonoBehaviour
     private void AttackEnemy(Enemy enemy)
     {
         enemy.TakeDamage(_damage);
-    }
-
-    private void OnDestroy()
-    {
-        StopCoroutine(_tryAttackEnemyCoroutine);
     }
 }

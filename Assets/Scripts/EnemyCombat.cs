@@ -8,11 +8,9 @@ public class EnemyCombat : MonoBehaviour
     [SerializeField] private Vector2 _attackRadius;
     [SerializeField] private LayerMask _playerLayer;
 
-    private Coroutine _tryAttackPlayerCoroutine;
-
     private void Start()
     {
-        _tryAttackPlayerCoroutine = StartCoroutine(TryAttackPlayer());
+        StartCoroutine(TryAttackPlayer());
     }
 
     private IEnumerator TryAttackPlayer()
@@ -39,10 +37,5 @@ public class EnemyCombat : MonoBehaviour
     private void AttackPlayer(Player player)
     {
         player.TakeDamage(_attackDamage);
-    }
-
-    private void OnDestroy()
-    {
-        StopCoroutine(_tryAttackPlayerCoroutine);
     }
 }

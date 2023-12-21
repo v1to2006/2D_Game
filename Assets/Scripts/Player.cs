@@ -1,14 +1,15 @@
-using System;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-    public static event Action<float, float> HealthChanged;
+    public event UnityAction<float, float> HealthChanged;
 
     private const string SceneMain = "MainScene";
 
     [SerializeField] private PlayerMesh _playerMesh;
+    [SerializeField] private VampyrismAbility _vampyrismAbility;
 
     private float _currentHealth;
     private float _maxHealth = 10f;
@@ -19,11 +20,14 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        VampyrismAbility.HealthVampyrised += TakeHeal;
-
         _currentHealth = _maxHealth;
 
         HealthChanged?.Invoke(_currentHealth, _maxHealth);
+    }
+
+    private void OnEnable()
+    {
+        _vampyrismAbility.HealthVampyrised += TakeHeal;
     }
 
     public void TakeDamage(float damage)

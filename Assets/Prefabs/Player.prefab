@@ -419,6 +419,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerMesh: {fileID: 5741321124282155960}
+  _vampyrismAbility: {fileID: 8752504487639437018}
 --- !u!114 &1543262401178312198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -488,6 +489,7 @@ MonoBehaviour:
   _fillColor: {r: 1, g: 0, b: 0, a: 1}
   _emptyColor: {r: 1, g: 1, b: 1, a: 1}
   _transitionSpeed: 3
+  _player: {fileID: 1575718424923759547}
 --- !u!114 &8752504487639437018
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -510,7 +512,6 @@ MonoBehaviour:
     m_Bits: 64
   _lineRenderer: {fileID: 2694195002475664813}
   _lineColor: {r: 1, g: 0, b: 0, a: 1}
-  _abilityStatus: {fileID: 0}
 --- !u!1 &6112565347308737366
 GameObject:
   m_ObjectHideFlags: 0

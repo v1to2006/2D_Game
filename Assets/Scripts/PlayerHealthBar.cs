@@ -9,17 +9,13 @@ public class PlayerHealthBar : MonoBehaviour
     [SerializeField] private Color _fillColor;
     [SerializeField] private Color _emptyColor;
     [SerializeField] private float _transitionSpeed;
+    [SerializeField] private Player _player;
 
     private Coroutine _healthTransitionCoroutine = null;
 
     private void OnEnable()
     {
-        Player.HealthChanged += DisplayHealth;
-    }
-
-    private void OnDisable()
-    {
-        Player.HealthChanged -= DisplayHealth;
+        _player.HealthChanged += DisplayHealth;
     }
 
     private void DisplayHealth(float currentHealth, float maxHealth)
@@ -59,11 +55,5 @@ public class PlayerHealthBar : MonoBehaviour
 
             yield return null;
         }
-    }
-
-    private void OnDestroy()
-    {
-        if (_healthTransitionCoroutine != null)
-            StopCoroutine(_healthTransitionCoroutine);
     }
 }
