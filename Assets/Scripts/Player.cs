@@ -19,6 +19,8 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
+        VampyrismAbility.HealthVampyrised += TakeHeal;
+
         _currentHealth = _maxHealth;
 
         HealthChanged?.Invoke(_currentHealth, _maxHealth);
@@ -35,6 +37,9 @@ public class Player : MonoBehaviour
 
     public void TakeHeal(float heal)
     {
+        if (_currentHealth == _maxHealth)
+            return;
+
         _playerMesh.PlayerAnimator.SetHeal();
         _currentHealth += heal;
 

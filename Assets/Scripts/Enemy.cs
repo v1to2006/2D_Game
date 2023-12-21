@@ -12,6 +12,8 @@ public class Enemy : MonoBehaviour
     private float _minHealth = 0f;
     private float _currentHealth;
 
+    public float Health => _currentHealth;
+
     private void Start()
     {
         _currentHealth = _maxHealth;
