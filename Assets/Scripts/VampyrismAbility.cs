@@ -44,9 +44,9 @@ public class VampyrismAbility : MonoBehaviour
                     {
                         SetLinePosition(new Vector2(0, 0), new Vector2(0, 0));
                     }));
-                }
 
-                yield return cooldown;
+                    yield return cooldown;
+                }
             }
 
             yield return null;
