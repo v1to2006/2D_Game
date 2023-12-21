@@ -1,25 +1,30 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(EnemyAnimator))]
 public class Enemy : MonoBehaviour
 {
+    public static event Action<Enemy, float, float> HealthChanged;
+
+    [SerializeField] private EnemyMesh _enemyMesh;
     [SerializeField] private float _maxHealth = 5f;
     
-    private EnemyAnimator _enemyAnimator;
     private float _minHealth = 0f;
     private float _currentHealth;
 
-    private void Awake()
+    private void Start()
     {
-        _enemyAnimator = GetComponent<EnemyAnimator>();
         _currentHealth = _maxHealth;
+
+        HealthChanged?.Invoke(this, _currentHealth, _maxHealth);
     }
 
     public void TakeDamage(float damage)
     {
-        _enemyAnimator.SetTakeDamage();
+        _enemyMesh.EnemyAnimator.SetTakeDamage();
         _currentHealth -= damage;
 
+        HealthChanged?.Invoke(this, _currentHealth, _maxHealth);
         CheckHealth();
     }
 
