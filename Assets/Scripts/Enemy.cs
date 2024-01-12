@@ -6,6 +6,7 @@ public class Enemy : MonoBehaviour
 {
     public event UnityAction<Enemy, float, float> HealthChanged;
 
+    [SerializeField] private EnemyElimination _enemyElimination;
     [SerializeField] private EnemyMesh _enemyMesh;
     [SerializeField] private float _maxHealth = 5f;
     
@@ -32,6 +33,8 @@ public class Enemy : MonoBehaviour
     public void Die()
     {
         Destroy(gameObject);
+
+        _enemyElimination.EnemyDied();
     }
 
     private void CheckHealth()
