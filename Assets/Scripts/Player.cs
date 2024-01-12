@@ -6,10 +6,9 @@ public class Player : MonoBehaviour
 {
     public event UnityAction<float, float> HealthChanged;
 
-    private const string SceneMain = "MainScene";
-
     [SerializeField] private PlayerMesh _playerMesh;
     [SerializeField] private VampyrismAbility _vampyrismAbility;
+    [SerializeField] private string _mainMenuScene;
 
     private float _currentHealth;
     private float _maxHealth = 10f;
@@ -18,7 +17,13 @@ public class Player : MonoBehaviour
     public float CurrentHealth => _currentHealth;
     public float MaxHealth => _maxHealth;
 
-    private void Start()
+	private void Awake()
+	{
+		Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+	}
+
+	private void Start()
     {
         _currentHealth = _maxHealth;
 
@@ -65,6 +70,6 @@ public class Player : MonoBehaviour
 
     private void Die()
     {
-        SceneManager.LoadScene(SceneMain);
+        SceneManager.LoadScene(_mainMenuScene);
     }
 }

@@ -8,15 +8,15 @@ public class CompleteArea : MonoBehaviour
     [SerializeField] private string _levelCompletedScene;
     [SerializeField] private Objective _objective;
 
-    private SpriteRenderer _spriteRenderer;
+    private SpriteRenderer _spriteRendrer;
     private BoxCollider2D _boxCollider2D;
 
     private void Awake()
     {
-        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _spriteRendrer = GetComponent<SpriteRenderer>();
         _boxCollider2D = GetComponent<BoxCollider2D>();
 
-        _spriteRenderer.enabled = false;
+        _spriteRendrer.enabled = false;
         _boxCollider2D.enabled = false;
     }
 
@@ -40,7 +40,7 @@ public class CompleteArea : MonoBehaviour
 
     private void Open()
     {
-        _spriteRenderer.enabled = true;
+        _spriteRendrer.enabled = true;
         _boxCollider2D.enabled = true;
     }
 }

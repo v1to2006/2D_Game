@@ -48,4 +48,9 @@ public class PlayerCombat : MonoBehaviour
     {
         enemy.TakeDamage(_damage);
     }
+
+	private void OnDrawGizmosSelected()
+	{
+		Gizmos.DrawSphere(_attackPoint.position, _attackRadius);
+	}
 }
